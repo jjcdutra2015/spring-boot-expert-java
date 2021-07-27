@@ -20,25 +20,25 @@ public class VendasApplication {
             clientes.salvar(new Cliente("Julia"));
             clientes.obterTodos().forEach(System.out::println);
 
-            System.out.println("Atualizando cliente");
-            clientes.obterTodos().forEach(c -> {
-                c.setNome(c.getNome() + " atualizado");
-                clientes.atualizar(c);
-            });
-            clientes.obterTodos().forEach(System.out::println);
-
-            System.out.println("Buscando cliente por nome");
-            clientes.buscarPorNome("Ju").forEach(System.out::println);
+//            System.out.println("Atualizando cliente");
+//            clientes.obterTodos().forEach(c -> {
+//                c.setNome(c.getNome() + " atualizado");
+//                clientes.atualizar(c);
+//            });
+//            clientes.obterTodos().forEach(System.out::println);
+//
+//            System.out.println("Buscando cliente por nome");
+//            clientes.buscarPorNome("Ju").forEach(System.out::println);
 
 //            System.out.println("Deletando cliente");
 //            clientes.obterTodos().forEach(c -> {
 //                clientes.deletar(c);
 //            });
-            if (clientes.obterTodos().isEmpty()) {
-                System.out.println("Nenhum cliente encontrado");
-            } else {
-                clientes.obterTodos().forEach(System.out::println);
-            }
+//            if (clientes.obterTodos().isEmpty()) {
+//                System.out.println("Nenhum cliente encontrado");
+//            } else {
+//                clientes.obterTodos().forEach(System.out::println);
+//            }
         };
     }
 

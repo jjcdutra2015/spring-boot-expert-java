@@ -16,28 +16,28 @@ public class VendasApplication {
         return args -> {
 
             System.out.println("Salvando cliente");
-            clientes.salvar(new Cliente("Julio"));
-            clientes.salvar(new Cliente("Julia"));
-            clientes.obterTodos().forEach(System.out::println);
+            clientes.save(new Cliente("Julio"));
+            clientes.save(new Cliente("Julia"));
+            clientes.findAll().forEach(System.out::println);
 
             System.out.println("Atualizando cliente");
-            clientes.obterTodos().forEach(c -> {
+            clientes.findAll().forEach(c -> {
                 c.setNome(c.getNome() + " atualizado");
-                clientes.atualizar(c);
+                clientes.save(c);
             });
-            clientes.obterTodos().forEach(System.out::println);
+            clientes.findAll().forEach(System.out::println);
 
             System.out.println("Buscando cliente por nome");
-            clientes.buscarPorNome("Ju").forEach(System.out::println);
+            clientes.findByNomeLike("Ju").forEach(System.out::println);
 
             System.out.println("Deletando cliente");
-            clientes.obterTodos().forEach(c -> {
-                clientes.deletar(c);
+            clientes.findAll().forEach(c -> {
+                clientes.delete(c);
             });
-            if (clientes.obterTodos().isEmpty()) {
+            if (clientes.findAll().isEmpty()) {
                 System.out.println("Nenhum cliente encontrado");
             } else {
-                clientes.obterTodos().forEach(System.out::println);
+                clientes.findAll().forEach(System.out::println);
             }
         };
     }

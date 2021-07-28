@@ -1,10 +1,24 @@
 package com.github.jjcdutra2015.domain.entity;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "item_pedido")
 public class ItemPedido {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "pedido_id")
+    private Pedido pedido;
+
+    @ManyToOne
+    @JoinColumn(name = "produto_id")
     private Produto produto;
+
+    @Column
     private Integer quantidade;
 
     public Integer getId() {
@@ -15,12 +29,12 @@ public class ItemPedido {
         this.id = id;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public Pedido getPedido() {
+        return pedido;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
 
     public Produto getProduto() {

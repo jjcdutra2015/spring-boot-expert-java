@@ -3,6 +3,7 @@ package com.github.jjcdutra2015.domain.entity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "pedido")
@@ -21,6 +22,9 @@ public class Pedido {
 
     @Column(name = "total", length = 20, precision = 2)
     private BigDecimal total;
+
+    @OneToMany(mappedBy = "pedido")
+    private List<ItemPedido> itens;
 
     public Integer getId() {
         return id;

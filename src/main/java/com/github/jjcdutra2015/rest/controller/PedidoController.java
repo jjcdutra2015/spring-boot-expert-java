@@ -11,7 +11,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RequestMapping("/api/pedidos")
 public class PedidoController {
 
-    private PedidoService service;
+    private final PedidoService service;
 
     public PedidoController(PedidoService service) {
         this.service = service;

@@ -58,7 +58,7 @@ public class PedidoServiceImpl implements PedidoService {
             Integer idProduto = dto.getProduto();
             Produto produto = produtosRepository
                     .findById(idProduto)
-                    .orElseThrow(() -> new RegraNegocioExcepetion("Código de produto inválido." + idProduto));
+                    .orElseThrow(() -> new RegraNegocioExcepetion("Código de produto inválido: " + idProduto));
 
             ItemPedido itemPedido = new ItemPedido();
             itemPedido.setQuantidade(dto.getQuantidade());

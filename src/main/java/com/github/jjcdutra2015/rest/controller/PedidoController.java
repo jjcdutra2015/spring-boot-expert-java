@@ -2,6 +2,8 @@ package com.github.jjcdutra2015.rest.controller;
 
 import com.github.jjcdutra2015.domain.entity.ItemPedido;
 import com.github.jjcdutra2015.domain.entity.Pedido;
+import com.github.jjcdutra2015.domain.enums.StatusPedido;
+import com.github.jjcdutra2015.rest.dto.AtualizaStatusPedidoDTO;
 import com.github.jjcdutra2015.rest.dto.InformacaoItemPedidoDTO;
 import com.github.jjcdutra2015.rest.dto.InformacoesPedidoDTO;
 import com.github.jjcdutra2015.rest.dto.PedidoDTO;
@@ -15,8 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/api/pedidos")
@@ -40,6 +41,13 @@ public class PedidoController {
         return service.obterPedidoCompleto(id)
                 .map(p -> converter(p))
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Pedido não encontrado"));
+    }
+
+    @PatchMapping("{id}")
+    @ResponseStatus(NO_CONTENT)
+    public void update(@PathVariable Integer id, @RequestBody AtualizaStatusPedidoDTO dto) {
+        String novoStatus = dto.getNovoStatus();
+        service.atualizaStatus(id, StatusPedido.valueOf(novoStatus));
     }
 
     private InformacoesPedidoDTO converter(Pedido pedido) {

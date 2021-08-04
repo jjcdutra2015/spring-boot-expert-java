@@ -9,6 +9,7 @@ import com.github.jjcdutra2015.domain.repository.Clientes;
 import com.github.jjcdutra2015.domain.repository.ItensPedido;
 import com.github.jjcdutra2015.domain.repository.Pedidos;
 import com.github.jjcdutra2015.domain.repository.Produtos;
+import com.github.jjcdutra2015.exception.PedidoNaoEncontradoException;
 import com.github.jjcdutra2015.exception.RegraNegocioExcepetion;
 import com.github.jjcdutra2015.rest.dto.ItemPedidoDTO;
 import com.github.jjcdutra2015.rest.dto.PedidoDTO;
@@ -55,6 +56,17 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public Optional<Pedido> obterPedidoCompleto(Integer id) {
         return repository.findByIdFetchItens(id);
+    }
+
+    @Override
+    @Transactional
+    public void atualizaStatus(Integer id, StatusPedido statusPedido) {
+        repository.findById(id)
+                .map(p -> {
+                    p.setStatus(statusPedido);
+                    return repository.save(p);
+                })
+                .orElseThrow(() -> new PedidoNaoEncontradoException());
     }
 
     private List<ItemPedido> converterItem(Pedido pedido, List<ItemPedidoDTO> itens) {

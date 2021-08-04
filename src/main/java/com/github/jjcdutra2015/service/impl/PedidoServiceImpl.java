@@ -4,6 +4,7 @@ import com.github.jjcdutra2015.domain.entity.Cliente;
 import com.github.jjcdutra2015.domain.entity.ItemPedido;
 import com.github.jjcdutra2015.domain.entity.Pedido;
 import com.github.jjcdutra2015.domain.entity.Produto;
+import com.github.jjcdutra2015.domain.enums.StatusPedido;
 import com.github.jjcdutra2015.domain.repository.Clientes;
 import com.github.jjcdutra2015.domain.repository.ItensPedido;
 import com.github.jjcdutra2015.domain.repository.Pedidos;
@@ -41,6 +42,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setTotal(dto.getTotal());
         pedido.setDataPedido(LocalDate.now());
         pedido.setCliente(cliente);
+        pedido.setStatus(StatusPedido.REALIZADO);
 
         List<ItemPedido> itensPedido = converterItem(pedido, dto.getItems());
         repository.save(pedido);

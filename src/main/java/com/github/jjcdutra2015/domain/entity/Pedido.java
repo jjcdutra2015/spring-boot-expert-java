@@ -1,6 +1,7 @@
 package com.github.jjcdutra2015.domain.entity;
 
 import com.github.jjcdutra2015.domain.enums.StatusPedido;
+import com.github.jjcdutra2015.validation.NotEmptyList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,5 +37,6 @@ public class Pedido {
     private StatusPedido status;
 
     @OneToMany(mappedBy = "pedido")
+    @NotEmptyList(message = "Pedido não pode ser realizado sem itens")
     private List<ItemPedido> itens;
 }

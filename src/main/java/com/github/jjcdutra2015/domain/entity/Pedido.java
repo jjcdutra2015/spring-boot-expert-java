@@ -37,6 +37,6 @@ public class Pedido {
     private StatusPedido status;
 
     @OneToMany(mappedBy = "pedido")
-    @NotEmptyList(message = "Pedido não pode ser realizado sem itens")
+    @NotEmptyList(message = "{campo.items-pedido.obrigatorio}")
     private List<ItemPedido> itens;
 }

@@ -10,7 +10,7 @@ import com.github.jjcdutra2015.domain.repository.ItensPedido;
 import com.github.jjcdutra2015.domain.repository.Pedidos;
 import com.github.jjcdutra2015.domain.repository.Produtos;
 import com.github.jjcdutra2015.exception.PedidoNaoEncontradoException;
-import com.github.jjcdutra2015.exception.RegraNegocioExcepetion;
+import com.github.jjcdutra2015.exception.RegraNegocioException;
 import com.github.jjcdutra2015.rest.dto.ItemPedidoDTO;
 import com.github.jjcdutra2015.rest.dto.PedidoDTO;
 import com.github.jjcdutra2015.service.PedidoService;
@@ -37,7 +37,7 @@ public class PedidoServiceImpl implements PedidoService {
     public Pedido salvar(PedidoDTO dto) {
         Cliente cliente = clientesRepository
                 .findById(dto.getCliente())
-                .orElseThrow(() -> new RegraNegocioExcepetion("Código de cliente inválido."));
+                .orElseThrow(() -> new RegraNegocioException("Código de cliente inválido."));
 
         Pedido pedido = new Pedido();
         pedido.setTotal(dto.getTotal());
@@ -71,14 +71,14 @@ public class PedidoServiceImpl implements PedidoService {
 
     private List<ItemPedido> converterItem(Pedido pedido, List<ItemPedidoDTO> itens) {
         if (itens.isEmpty()) {
-            throw new RegraNegocioExcepetion("Não é possível realizar um pedido sem itens.");
+            throw new RegraNegocioException("Não é possível realizar um pedido sem itens.");
         }
 
         return itens.stream().map(dto -> {
             Integer idProduto = dto.getProduto();
             Produto produto = produtosRepository
                     .findById(idProduto)
-                    .orElseThrow(() -> new RegraNegocioExcepetion("Código de produto inválido: " + idProduto));
+                    .orElseThrow(() -> new RegraNegocioException("Código de produto inválido: " + idProduto));
 
             ItemPedido itemPedido = new ItemPedido();
             itemPedido.setQuantidade(dto.getQuantidade());

@@ -1,6 +1,8 @@
 package com.github.jjcdutra2015;
 
 import com.github.jjcdutra2015.domain.entity.Usuario;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,10 +37,37 @@ public class JwtService {
                 .compact();
     }
 
+    private Claims obterClaims(String token) throws ExpiredJwtException {
+        return Jwts.parser()
+                .setSigningKey(chaveAssinatura)
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    public boolean tokenValido(String token) {
+        try {
+            Claims claims = obterClaims(token);
+            Date expiration = claims.getExpiration();
+            LocalDateTime dateTime = expiration.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+            return !LocalDateTime.now().isAfter(dateTime);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public String obterLogin(String token) {
+        return (String) obterClaims(token).getSubject();
+    }
+
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(VendasApplication.class);
         JwtService jwtService = context.getBean(JwtService.class);
         String token = jwtService.gerarToken(Usuario.builder().login("fulano").build());
         System.out.println(token);
+
+        boolean isTokenValido = jwtService.tokenValido(token);
+        System.out.println("Token está válido? " + isTokenValido);
+
+        System.out.println(jwtService.obterLogin(token));
     }
 }

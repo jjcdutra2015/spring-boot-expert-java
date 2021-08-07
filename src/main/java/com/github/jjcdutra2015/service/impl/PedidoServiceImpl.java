@@ -5,10 +5,10 @@ import com.github.jjcdutra2015.domain.entity.ItemPedido;
 import com.github.jjcdutra2015.domain.entity.Pedido;
 import com.github.jjcdutra2015.domain.entity.Produto;
 import com.github.jjcdutra2015.domain.enums.StatusPedido;
-import com.github.jjcdutra2015.domain.repository.Clientes;
-import com.github.jjcdutra2015.domain.repository.ItensPedido;
-import com.github.jjcdutra2015.domain.repository.Pedidos;
-import com.github.jjcdutra2015.domain.repository.Produtos;
+import com.github.jjcdutra2015.domain.repository.ClienteRepository;
+import com.github.jjcdutra2015.domain.repository.ItemPedidoRespository;
+import com.github.jjcdutra2015.domain.repository.PedidoRepository;
+import com.github.jjcdutra2015.domain.repository.ProdutoRepository;
 import com.github.jjcdutra2015.exception.PedidoNaoEncontradoException;
 import com.github.jjcdutra2015.exception.RegraNegocioException;
 import com.github.jjcdutra2015.rest.dto.ItemPedidoDTO;
@@ -27,15 +27,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PedidoServiceImpl implements PedidoService {
 
-    private final Pedidos repository;
-    private final Clientes clientesRepository;
-    private final Produtos produtosRepository;
-    private final ItensPedido itensPedidoRepository;
+    private final PedidoRepository repository;
+    private final ClienteRepository clienteRepositoryRepository;
+    private final ProdutoRepository produtoRepositoryRepository;
+    private final ItemPedidoRespository itemPedidoRespositoryRepository;
 
     @Override
     @Transactional
     public Pedido salvar(PedidoDTO dto) {
-        Cliente cliente = clientesRepository
+        Cliente cliente = clienteRepositoryRepository
                 .findById(dto.getCliente())
                 .orElseThrow(() -> new RegraNegocioException("Código de cliente inválido."));
 
@@ -47,7 +47,7 @@ public class PedidoServiceImpl implements PedidoService {
 
         List<ItemPedido> itensPedido = converterItem(pedido, dto.getItems());
         repository.save(pedido);
-        itensPedidoRepository.saveAll(itensPedido);
+        itemPedidoRespositoryRepository.saveAll(itensPedido);
         pedido.setItens(itensPedido);
 
         return pedido;
@@ -76,7 +76,7 @@ public class PedidoServiceImpl implements PedidoService {
 
         return itens.stream().map(dto -> {
             Integer idProduto = dto.getProduto();
-            Produto produto = produtosRepository
+            Produto produto = produtoRepositoryRepository
                     .findById(idProduto)
                     .orElseThrow(() -> new RegraNegocioException("Código de produto inválido: " + idProduto));
 

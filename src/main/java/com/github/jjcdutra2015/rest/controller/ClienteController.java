@@ -1,7 +1,7 @@
 package com.github.jjcdutra2015.rest.controller;
 
 import com.github.jjcdutra2015.domain.entity.Cliente;
-import com.github.jjcdutra2015.domain.repository.Clientes;
+import com.github.jjcdutra2015.domain.repository.ClienteRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
@@ -15,30 +15,30 @@ import java.util.List;
 @RequestMapping("/api/clientes")
 public class ClienteController {
 
-    private Clientes clientes;
+    private ClienteRepository clienteRepository;
 
-    public ClienteController(Clientes clientes) {
-        this.clientes = clientes;
+    public ClienteController(ClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
     }
 
     @GetMapping("{id}")
     public Cliente getClienteByid(@PathVariable Integer id) {
-        return clientes.findById(id)
+        return clienteRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente save(@RequestBody @Valid Cliente cliente) {
-        return clientes.save(cliente);
+        return clienteRepository.save(cliente);
     }
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Integer id) {
-        clientes.findById(id)
+        clienteRepository.findById(id)
                 .map(cliente -> {
-                    clientes.delete(cliente);
+                    clienteRepository.delete(cliente);
                     return cliente;
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
@@ -47,9 +47,9 @@ public class ClienteController {
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable Integer id, @RequestBody @Valid Cliente cliente) {
-        clientes.findById(id).map(clienteExistente -> {
+        clienteRepository.findById(id).map(clienteExistente -> {
             cliente.setId(clienteExistente.getId());
-            clientes.save(cliente);
+            clienteRepository.save(cliente);
             return cliente;
         }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
     }
@@ -61,6 +61,6 @@ public class ClienteController {
                 .withIgnoreCase()
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
         Example<Cliente> example = Example.of(clienteFiltro, matcher);
-        return clientes.findAll(example);
+        return clienteRepository.findAll(example);
     }
 }

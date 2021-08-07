@@ -1,7 +1,7 @@
 package com.github.jjcdutra2015.rest.controller;
 
 import com.github.jjcdutra2015.domain.entity.Produto;
-import com.github.jjcdutra2015.domain.repository.Produtos;
+import com.github.jjcdutra2015.domain.repository.ProdutoRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
@@ -18,9 +18,9 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @RequestMapping("/api/produtos")
 public class ProdutoController {
 
-    private Produtos repository;
+    private ProdutoRepository repository;
 
-    public ProdutoController(Produtos repository) {
+    public ProdutoController(ProdutoRepository repository) {
         this.repository = repository;
     }
 

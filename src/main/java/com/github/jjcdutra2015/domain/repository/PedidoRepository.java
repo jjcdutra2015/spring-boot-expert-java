@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface Pedidos extends JpaRepository<Pedido, Integer> {
+public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
 
     List<Pedido> findByCliente(Cliente cliente);
 

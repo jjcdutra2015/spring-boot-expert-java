@@ -1,5 +1,6 @@
-package com.github.jjcdutra2015;
+package com.github.jjcdutra2015.security.jwt;
 
+import com.github.jjcdutra2015.VendasApplication;
 import com.github.jjcdutra2015.domain.entity.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

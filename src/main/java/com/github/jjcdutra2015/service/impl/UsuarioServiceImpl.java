@@ -2,6 +2,7 @@ package com.github.jjcdutra2015.service.impl;
 
 import com.github.jjcdutra2015.domain.entity.Usuario;
 import com.github.jjcdutra2015.domain.repository.UsuarioRepository;
+import com.github.jjcdutra2015.exception.SenhaInvalidaException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,6 +20,15 @@ public class UsuarioServiceImpl implements UserDetailsService {
     public UsuarioServiceImpl(PasswordEncoder encoder, UsuarioRepository repository) {
         this.encoder = encoder;
         this.repository = repository;
+    }
+
+    public UserDetails autenticar(Usuario usuario) {
+        UserDetails user = loadUserByUsername(usuario.getLogin());
+        boolean senhasBatem = encoder.matches(usuario.getPassword(), user.getPassword());
+        if (senhasBatem) {
+            return user;
+        }
+        throw new SenhaInvalidaException();
     }
 
     @Override

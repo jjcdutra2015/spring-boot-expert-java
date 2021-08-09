@@ -60,15 +60,15 @@ public class JwtService {
         return (String) obterClaims(token).getSubject();
     }
 
-    public static void main(String[] args) {
-        ConfigurableApplicationContext context = SpringApplication.run(VendasApplication.class);
-        JwtService jwtService = context.getBean(JwtService.class);
-        String token = jwtService.gerarToken(Usuario.builder().login("fulano").build());
-        System.out.println(token);
-
-        boolean isTokenValido = jwtService.tokenValido(token);
-        System.out.println("Token está válido? " + isTokenValido);
-
-        System.out.println(jwtService.obterLogin(token));
-    }
+//    public static void main(String[] args) {
+//        ConfigurableApplicationContext context = SpringApplication.run(VendasApplication.class);
+//        JwtService jwtService = context.getBean(JwtService.class);
+//        String token = jwtService.gerarToken(Usuario.builder().login("fulano").build());
+//        System.out.println(token);
+//
+//        boolean isTokenValido = jwtService.tokenValido(token);
+//        System.out.println("Token está válido? " + isTokenValido);
+//
+//        System.out.println(jwtService.obterLogin(token));
+//    }
 }

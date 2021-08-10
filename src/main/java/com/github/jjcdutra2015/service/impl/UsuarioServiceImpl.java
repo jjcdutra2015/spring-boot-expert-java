@@ -24,7 +24,7 @@ public class UsuarioServiceImpl implements UserDetailsService {
 
     public UserDetails autenticar(Usuario usuario) {
         UserDetails user = loadUserByUsername(usuario.getLogin());
-        boolean senhasBatem = encoder.matches(usuario.getPassword(), user.getPassword());
+        boolean senhasBatem = encoder.matches(usuario.getSenha(), user.getPassword());
         if (senhasBatem) {
             return user;
         }
@@ -40,15 +40,15 @@ public class UsuarioServiceImpl implements UserDetailsService {
 
         return User.builder()
                 .username(usuario.getLogin())
-                .password(usuario.getPassword())
+                .password(usuario.getSenha())
                 .roles(roles)
                 .build();
     }
 
     @Transactional
     public Usuario salvar(Usuario usuario) {
-        String senhaCriptografada = encoder.encode(usuario.getPassword());
-        usuario.setPassword(senhaCriptografada);
+        String senhaCriptografada = encoder.encode(usuario.getSenha());
+        usuario.setSenha(senhaCriptografada);
         return repository.save(usuario);
     }
 }

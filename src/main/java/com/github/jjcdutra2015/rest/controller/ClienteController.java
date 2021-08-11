@@ -2,6 +2,7 @@ package com.github.jjcdutra2015.rest.controller;
 
 import com.github.jjcdutra2015.domain.entity.Cliente;
 import com.github.jjcdutra2015.domain.repository.ClienteRepository;
+import io.swagger.annotations.*;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/clientes")
+@Api("Api de Clientes")
 public class ClienteController {
 
     private ClienteRepository clienteRepository;
@@ -22,13 +24,24 @@ public class ClienteController {
     }
 
     @GetMapping("{id}")
-    public Cliente getClienteByid(@PathVariable Integer id) {
+    @ApiOperation("Obter detalhes de um cliente")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Cliente encontrado"),
+            @ApiResponse(code = 404, message = "Cliente não encontrado para o id informado")
+    })
+    public Cliente getClienteByid(@PathVariable
+                                  @ApiParam("Id do cliente") Integer id) {
         return clienteRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation("Salvar um cliente")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Cliente salvo com sucesso"),
+            @ApiResponse(code = 400, message = "Cliente inválido")
+    })
     public Cliente save(@RequestBody @Valid Cliente cliente) {
         return clienteRepository.save(cliente);
     }
